@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Login screen background: campus photo + green scrim + CSU badge card on top.
+     Needs API 23+ for fixed item width/height. -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 1. campus photo -->
+    <item>
+        <bitmap
+            android:src="@drawable/bg_campus"
+            android:gravity="fill" />
+    </item>
+
+    <!-- 2. green scrim: light at top (photo shows), solid-ish at bottom (white text readable) -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="270"
+                android:startColor="#260E4423"
+                android:centerColor="#CC0E4423"
+                android:endColor="#F20E4423" />
+        </shape>
+    </item>
+
+
+    <!-- 3. CSU badge, transparent background (aspect 2.22:1) -->
+    <item
+        android:width="260dp"
+        android:height="117dp"
+        android:top="48dp"
+        android:gravity="top|center_horizontal">
+        <bitmap
+            android:src="@drawable/csu_badge"
+            android:gravity="fill" />
+    </item>
+</layer-list>

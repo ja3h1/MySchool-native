@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The Schedule tile was merged into the "Class schedule" card (cardNextClass).
+         MainActivity still references R.id.menuSchedule, so the id is kept here and the
+         Java null-checks make it a harmless no-op. You can delete this file after removing
+         the menuSchedule lines from MainActivity.java. -->
+    <item name="menuSchedule" type="id" />
+</resources>

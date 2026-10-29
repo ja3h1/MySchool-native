@@ -1,0 +1,19 @@
+<resources>
+    <color name="primary">#0E4423</color>
+    <color name="primary_container">#0E4423</color>
+    <color name="on_primary_container">#ffffff</color>
+    <color name="primary_tint">#E4F0E7</color>
+    <color name="accent">#FFC83D</color>
+    <color name="background">#F3F6F3</color>
+    <color name="surface">#ffffff</color>
+    <color name="on_surface">#15221A</color>
+    <color name="on_surface_variant">#55655A</color>
+    <color name="outline">#D8E1DA</color>
+    <color name="error">#a83232</color>
+    <color name="login_btn">#FFC83D</color>
+
+    <color name="tile_stroke">#DCE5DE</color>
+    <color name="tint_moss">#E3EEE6</color>
+    <color name="tint_alert">#FBEDEA</color>
+    <color name="stroke_alert">#E8B9B1</color>
+</resources>

@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">MySchool</string>
+    <string name="login_brand">MySchool</string>
+    <string name="login_headline">Welcome,\nto My Student\nportal.</string>
+    <string name="login_sub">Log in once to see your grades, class schedule, clearance, and more.</string>
+    <string name="btn_login">Log in with MySchool</string>
+    <string name="login_footer">You sign in on the school\'s own page. The app never sees your password.</string>
+    <string name="session_expired_title">Your session\nended.</string>
+    <string name="session_expired_message">The portal signs you out after 15 minutes. Log in again to keep going.</string>
+    <string name="btn_relogin">Log in again</string>
+    <string name="logout">Log out</string>
+    <string name="session_timer">Session ends in 12 min</string>
+    <string name="btn_clear_relogin">Clear data and log in again</string>
+</resources>

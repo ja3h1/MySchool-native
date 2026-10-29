@@ -1,0 +1,539 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/primary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- WebView at back: used for login, as the hidden session for API calls,
+             and as a fallback when the user opens a course/event in full web view -->
+        <WebView
+            android:id="@+id/webViewMasao"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scrollMasaoHome"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#F5F6F8"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:text="Dashboard"
+                        android:textSize="22sp" android:textStyle="bold"/>
+                    <TextView android:id="@+id/tvBell" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:padding="8dp"
+                        android:text="🔔" android:textSize="18sp"/>
+                    <TextView android:id="@+id/tvMsg" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:padding="8dp"
+                        android:text="💬" android:textSize="18sp"/>
+                    <TextView android:id="@+id/tvAvatar" android:layout_width="36dp"
+                        android:layout_height="36dp" android:layout_marginStart="4dp"
+                        android:background="@drawable/bg_avatar" android:gravity="center"
+                        android:text="\?" android:textColor="#FFFFFF" android:textStyle="bold"/>
+                </LinearLayout>
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabMasao"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"/>
+
+                <TextView android:id="@+id/tvMasaoState" android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:padding="12dp"
+                    android:visibility="gone"/>
+
+                <!-- ========== DASHBOARD ========== -->
+                <LinearLayout
+                    android:id="@+id/llDashboard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- Timeline -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp" app:cardCornerRadius="10dp" app:cardElevation="2dp">
+                        <LinearLayout android:layout_width="match_parent"
+                            android:layout_height="wrap_content" android:orientation="vertical"
+                            android:padding="12dp">
+                            <TextView android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" android:text="Timeline"
+                                android:textSize="17sp" android:textStyle="bold"/>
+                            <LinearLayout android:layout_width="match_parent"
+                                android:layout_height="wrap_content" android:layout_marginTop="8dp"
+                                android:orientation="horizontal">
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/btnTlFilter"
+                                    style="@style/Widget.Material3.Button.OutlinedButton"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" android:text="All ▾"/>
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/btnTlSort"
+                                    style="@style/Widget.Material3.Button.OutlinedButton"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp" android:text="Sort by dates ▾"/>
+                            </LinearLayout>
+                            <EditText android:id="@+id/etTlSearch" android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Search by activity type or name"
+                                android:inputType="text" android:maxLines="1"/>
+                            <LinearLayout android:id="@+id/llTimeline"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" android:orientation="vertical"/>
+                            <TextView android:id="@+id/tvTlEmpty" android:layout_width="match_parent"
+                                android:layout_height="wrap_content" android:gravity="center"
+                                android:padding="24dp" android:text="No activities require action"
+                                android:alpha="0.6" android:visibility="gone"/>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Recently accessed courses -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp" app:cardCornerRadius="10dp" app:cardElevation="2dp">
+                        <LinearLayout android:layout_width="match_parent"
+                            android:layout_height="wrap_content" android:orientation="vertical"
+                            android:padding="12dp">
+                            <TextView android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Recently accessed courses"
+                                android:textSize="17sp" android:textStyle="bold"/>
+                            <HorizontalScrollView android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:scrollbars="none">
+                                <LinearLayout android:id="@+id/llRecentCourses"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"/>
+                            </HorizontalScrollView>
+                            <TextView android:id="@+id/tvRcEmpty" android:layout_width="match_parent"
+                                android:layout_height="wrap_content" android:gravity="center"
+                                android:padding="24dp" android:text="No recent courses"
+                                android:alpha="0.6" android:visibility="gone"/>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Recently accessed items -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp" app:cardCornerRadius="10dp" app:cardElevation="2dp">
+                        <LinearLayout android:layout_width="match_parent"
+                            android:layout_height="wrap_content" android:orientation="vertical"
+                            android:padding="12dp">
+                            <TextView android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Recently accessed items"
+                                android:textSize="17sp" android:textStyle="bold"/>
+                            <LinearLayout android:id="@+id/llRecentItems"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" android:orientation="vertical"/>
+                            <TextView android:id="@+id/tvRiEmpty" android:layout_width="match_parent"
+                                android:layout_height="wrap_content" android:gravity="center"
+                                android:padding="16dp" android:text="No recent items"
+                                android:alpha="0.6" android:visibility="gone"/>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Upcoming events -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp" app:cardCornerRadius="10dp" app:cardElevation="2dp">
+                        <LinearLayout android:layout_width="match_parent"
+                            android:layout_height="wrap_content" android:orientation="vertical"
+                            android:padding="12dp">
+                            <TextView android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" android:text="Upcoming events"
+                                android:textSize="17sp" android:textStyle="bold"/>
+                            <LinearLayout android:id="@+id/llUpcoming"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" android:orientation="vertical"/>
+                            <TextView android:id="@+id/tvUpEmpty" android:layout_width="match_parent"
+                                android:layout_height="wrap_content" android:gravity="center"
+                                android:padding="16dp" android:text="There are no upcoming events"
+                                android:alpha="0.6" android:visibility="gone"/>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Private files -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp" android:layout_marginBottom="16dp"
+                        app:cardCornerRadius="10dp" app:cardElevation="2dp">
+                        <TextView android:id="@+id/tvPrivateFiles"
+                            android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:padding="16dp" android:text="Private files  ›  Manage private files..."
+                            android:textSize="15sp"/>
+                    </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
+
+                <!-- ========== HOME (site front page) ========== -->
+                <LinearLayout
+                    android:id="@+id/llHome"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <!-- Site pages -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardHomeSite"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp" android:visibility="gone"
+                        app:cardCornerRadius="10dp" app:cardElevation="2dp">
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:orientation="vertical" android:padding="12dp">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="Site" android:textSize="17sp" android:textStyle="bold"/>
+                            <LinearLayout android:id="@+id/llHomeSite" android:layout_width="match_parent"
+                                android:layout_height="wrap_content" android:layout_marginTop="8dp"
+                                android:orientation="vertical"/>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Announcements, News & Updates -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardHomePosts"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp" android:visibility="gone"
+                        app:cardCornerRadius="10dp" app:cardElevation="2dp">
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:orientation="vertical" android:padding="12dp">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="Announcements, News &amp; Updates"
+                                android:textSize="17sp" android:textStyle="bold"/>
+                            <LinearLayout android:id="@+id/llHomePosts" android:layout_width="match_parent"
+                                android:layout_height="wrap_content" android:layout_marginTop="8dp"
+                                android:orientation="vertical"/>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Latest announcements -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardHomeNews"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp" android:visibility="gone"
+                        app:cardCornerRadius="10dp" app:cardElevation="2dp">
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:orientation="vertical" android:padding="12dp">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="Latest announcements" android:textSize="17sp" android:textStyle="bold"/>
+                            <LinearLayout android:id="@+id/llHomeNews" android:layout_width="match_parent"
+                                android:layout_height="wrap_content" android:layout_marginTop="8dp"
+                                android:orientation="vertical"/>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Upcoming events -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp" app:cardCornerRadius="10dp" app:cardElevation="2dp">
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:orientation="vertical" android:padding="12dp">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="Upcoming events" android:textSize="17sp" android:textStyle="bold"/>
+                            <LinearLayout android:id="@+id/llHomeUpcoming" android:layout_width="match_parent"
+                                android:layout_height="wrap_content" android:layout_marginTop="8dp"
+                                android:orientation="vertical"/>
+                            <TextView android:id="@+id/tvHomeUpEmpty" android:layout_width="match_parent"
+                                android:layout_height="wrap_content" android:gravity="center" android:padding="16dp"
+                                android:text="There are no upcoming events" android:alpha="0.6"
+                                android:visibility="gone"/>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Caraga State University links -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp" android:layout_marginBottom="16dp"
+                        app:cardCornerRadius="10dp" app:cardElevation="2dp">
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                            android:orientation="vertical" android:padding="12dp">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:text="Caraga State University" android:textSize="17sp" android:textStyle="bold"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                android:layout_marginBottom="8dp" android:alpha="0.7"
+                                android:text="Competence. Service. Uprightness." android:textSize="12sp"/>
+                            <LinearLayout android:id="@+id/llHomeLinks" android:layout_width="match_parent"
+                                android:layout_height="wrap_content" android:orientation="vertical"/>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
+
+                <!-- ========== MY COURSES ========== -->
+                <LinearLayout
+                    android:id="@+id/llMyCourses"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipMasaoCourses"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"/>
+                    <TextView android:id="@+id/tvMasaoNoCourses" android:layout_width="match_parent"
+                        android:layout_height="wrap_content" android:gravity="center"
+                        android:padding="24dp" android:text="No courses" android:visibility="gone"/>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvMasaoCourses"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"/>
+                </LinearLayout>
+
+                <!-- ========== COURSE VIEW ========== -->
+                <LinearLayout
+                    android:id="@+id/llCourseView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnCourseBack"
+                            style="@style/Widget.Material3.Button.TextButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="‹ Back"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvCourseViewTitle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="8dp"
+                            android:ellipsize="end"
+                            android:maxLines="2"
+                            android:textColor="@color/on_surface"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llCourseSections"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical" />
+                </LinearLayout>
+
+                <!-- ========== USER PROFILE VIEW ========== -->
+                <LinearLayout
+                    android:id="@+id/llProfileView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnProfileBack"
+                            style="@style/Widget.Material3.Button.TextButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="‹ Back"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="8dp"
+                            android:text="User Profile"
+                            android:textColor="@color/on_surface"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="2dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="24dp">
+
+                            <TextView
+                                android:id="@+id/tvProfileAvatar"
+                                android:layout_width="72dp"
+                                android:layout_height="72dp"
+                                android:background="@drawable/bg_avatar"
+                                android:gravity="center"
+                                android:text="\?"
+                                android:textColor="#FFFFFF"
+                                android:textSize="28sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvProfileName"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:textColor="@color/on_surface"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <LinearLayout
+                        android:id="@+id/llProfileCategories"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="12dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <!-- Native Login Form Overlay -->
+        <LinearLayout
+            android:id="@+id/layoutMasaoLogin"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_login"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:fontFamily="sans-serif-black"
+                android:gravity="center"
+                android:lineSpacingMultiplier="1.1"
+                android:text="masaoLMS\nStudent Portal Login"
+                android:textColor="@android:color/white"
+                android:textSize="26sp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:hint="Username or email"
+                app:boxStrokeColor="@android:color/white"
+                app:boxStrokeWidth="2dp"
+                app:hintTextColor="@android:color/white"
+                app:boxBackgroundColor="#22000000"
+                app:boxBackgroundMode="outline">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etMasaoUser"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:textColor="@android:color/white" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:hint="Password"
+                app:boxStrokeColor="@android:color/white"
+                app:boxStrokeWidth="2dp"
+                app:endIconMode="password_toggle"
+                app:endIconTint="@android:color/white"
+                app:hintTextColor="@android:color/white"
+                app:boxBackgroundColor="#22000000"
+                app:boxBackgroundMode="outline">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etMasaoPass"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:singleLine="true"
+                    android:textColor="@android:color/white" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <CheckBox
+                android:id="@+id/cbMasaoSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:textColor="@android:color/white"
+                android:buttonTint="@android:color/white"
+                android:text="Save this account for 4 days" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnMasaoLogin"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginBottom="12dp"
+                android:backgroundTint="@color/login_btn"
+                android:text="Log in to masaoLMS"
+                android:textColor="@color/on_surface"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:cornerRadius="16dp" />
+
+            <TextView
+                android:id="@+id/tvMasaoStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:gravity="center"
+                android:text="Ready to sign in…"
+                android:textColor="#b9c4bd"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+    </FrameLayout>
+
+</LinearLayout>
